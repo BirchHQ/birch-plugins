@@ -1,0 +1,16 @@
+{
+  "name": "birch",
+  "owner": {
+    "name": "Birch"
+  },
+  "metadata": {
+    "description": "Plugins that report Claude Code's live status to the Birch desktop app."
+  },
+  "plugins": [
+    {
+      "name": "birch-status",
+      "source": "./claude-code",
+      "description": "Report Claude Code agent status (working / waiting for input / idle) to the Birch git client."
+    }
+  ]
+}

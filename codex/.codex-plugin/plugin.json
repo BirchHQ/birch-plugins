@@ -1,0 +1,29 @@
+{
+  "name": "birch-status",
+  "version": "0.2.0",
+  "description": "Reports native Codex lifecycle status (working, waiting for input, idle, and ended) to the Birch git client.",
+  "author": {
+    "name": "Birch",
+    "url": "https://www.getbirchcode.dev/"
+  },
+  "homepage": "https://www.getbirchcode.dev/",
+  "repository": "https://github.com/BirchHQ/birch-plugins",
+  "keywords": [
+    "birch",
+    "codex",
+    "status",
+    "hooks"
+  ],
+  "interface": {
+    "displayName": "Birch Status",
+    "shortDescription": "Show native Codex activity in Birch.",
+    "longDescription": "Reports Codex lifecycle, permission, user-input, and subagent events to the matching Birch workspace.",
+    "developerName": "Birch",
+    "category": "Developer Tools",
+    "capabilities": [],
+    "websiteURL": "https://www.getbirchcode.dev/",
+    "defaultPrompt": [
+      "Show this Codex workspace's live status in Birch."
+    ]
+  }
+}

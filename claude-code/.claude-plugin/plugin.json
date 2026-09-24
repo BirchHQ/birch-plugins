@@ -1,0 +1,10 @@
+{
+  "name": "birch-status",
+  "version": "0.7.0",
+  "description": "Reports Claude Code agent status (started / working / waiting for input / sub-agent-aware idle / stopped with an error / ended) to a running Birch git client, and adds /birch to continue the current session inside Birch.",
+  "author": {
+    "name": "Birch"
+  },
+  "homepage": "https://www.getbirchcode.dev/",
+  "repository": "https://github.com/BirchHQ/birch-plugins"
+}
