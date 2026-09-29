@@ -1,7 +1,7 @@
 {
   "name": "birch-status",
   "version": "0.2.0",
-  "description": "Reports native Codex lifecycle status (working, waiting for input, idle, and ended) to the Birch git client.",
+  "description": "Reports native Codex lifecycle status (working, waiting for input, idle, and ended) to the Birch app.",
   "author": {
     "name": "Birch",
     "url": "https://www.getbirchcode.dev/"

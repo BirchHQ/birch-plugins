@@ -1,13 +1,12 @@
 # birch-status for Codex
 
-Reports the live status of a Codex session to the matching workspace in a running
-[Birch](https://www.getbirchcode.dev/) desktop app. The plugin uses Codex's native lifecycle hooks;
-nothing polls Codex or watches its processes.
+Reports the live status of each Codex session to the running [Birch](https://www.getbirchcode.dev/) desktop app.
+
+The plugin uses Codex's native lifecycle hooks; nothing polls Codex or watches its processes.
 
 ## Status reporting
 
-Every hook runs `birch agent-event`, which reads the hook's JSON payload from standard input, finds the
-workspace that contains the session's `cwd`, and relays the event to Birch:
+Each hook invokes `birch agent-event`, which reads the hook's JSON payload from standard input and passes the event to Birch. Birch shows the resulting status on the workspace containing the session's `cwd`:
 
 | Codex hook | `birch agent-event` | What Birch shows |
 | --- | --- | --- |
@@ -18,21 +17,28 @@ workspace that contains the session's `cwd`, and relays the event to Birch:
 | `PostToolUse` | `--event working` | working |
 | `Stop` | `--event idle` | done |
 | `SessionEnd` | `--event ended` | the session is over |
-| `SubagentStart` | `--event subagent-started` | nothing (counts running sub-agents) |
-| `SubagentStop` | `--event subagent-stopped` | nothing (counts running sub-agents) |
+| `SubagentStart` | `--event subagent-started` | nothing (sub-agent bookkeeping) |
+| `SubagentStop` | `--event subagent-stopped` | nothing (sub-agent bookkeeping) |
 
-`PermissionRequest` and `request_user_input` are separate, explicit waiting signals; the `PostToolUse`
-that follows your answer switches the workspace back to working. The sub-agent events let Birch avoid
-showing a finished turn while background agents are still running.
+- **Waiting.** `PermissionRequest` and `request_user_input` are separate, explicit signals that Codex is waiting for you. The `PostToolUse` that follows your answer moves the workspace back to working.
 
-Every command passes `--agent codex`, so Birch knows which agent reported without relying on
-Codex-specific payload fields. Each hook has a three-second timeout. If Birch isn't running, the command
-exits silently and does not interrupt Codex. It talks to Birch over a local named pipe only.
+- **Sub-agents.** `SubagentStart` and `SubagentStop` let Birch track running background agents, so it does not show a turn as done while sub-agents are still working.
+
+Every hook passes `--agent codex`, so Birch knows which agent reported the event without relying on Codex-specific payload fields.
+
+If Birch isn't running, `birch agent-event` exits silently and never interrupts Codex. Every hook also specifies a three-second timeout.
+
+The command communicates with Birch only through a local named pipe. It never opens Birch's database and makes no network requests.
 
 ## Requirements
 
-The `birch` command-line tool that ships with Birch must be on your `PATH`. Birch can set that up:
-**Settings → Status integrations → Install birch CLI to PATH**. Check with:
+The `birch` command-line tool that ships with Birch must be on your `PATH`. Birch can set this up from:
+
+**Settings -> Status integrations -> Install birch CLI to PATH**
+
+On macOS, Birch creates a symlink in `/usr/local/bin`. On Windows, it adds the CLI directory to your user `PATH`.
+
+Check the installation with:
 
 ```bash
 birch --help
@@ -40,23 +46,25 @@ birch --help
 
 ## Install
 
-Birch installs and updates this plugin itself: **Settings → Status integrations → Codex** has Install,
-Update and Uninstall, and Birch offers the plugin the first time you start a Codex workspace. Birch
-writes this marketplace from its own bundle to `agent-plugins/codex` in its data directory
-(`~/Library/Application Support/birch` on macOS, `%APPDATA%\birch` on Windows) and registers that
-folder with Codex as a local marketplace, so the plugin always matches the Birch version you run and
-installing needs no network.
+Birch normally installs and updates this plugin for you. It offers the plugin when you first use Codex, and **Settings -> Status integrations -> Codex** provides Install, Update, and Uninstall actions.
 
-To install it by hand instead:
+Birch writes the bundled marketplace to `agent-plugins/codex` in its data directory:
+
+- macOS: `~/Library/Application Support/birch`
+- Windows: `%APPDATA%\birch`
+
+It then registers that directory with Codex as a local marketplace. This keeps the installed plugin aligned with the Birch version you are running and requires no network access.
+
+To install the plugin manually:
 
 ```bash
 codex plugin marketplace add BirchHQ/birch-plugins
 codex plugin add birch-status@birch
 ```
 
-Then start a new Codex session so the hooks load, open `/hooks`, review the `birch-status` commands and
-trust them. Codex does not run a plugin's hooks until you approve them, and it asks again whenever a
-hook's command changes.
+Then start a new Codex session so the hooks load. Open `/hooks`, review the `birch-status` commands, and trust them.
+
+Codex does not run a plugin's hooks until you approve them, and asks again whenever a hook command changes.
 
 ## Uninstall
 
