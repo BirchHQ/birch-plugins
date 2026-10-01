@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Report a security vulnerability privately
+    url: https://github.com/BirchHQ/birch-code/security/advisories/new
+    about: Use the private Birch security channel. Do not post vulnerabilities or secrets in public issues.
+  - name: Birch product support
+    url: https://github.com/BirchHQ/birch-code/issues/new/choose
+    about: Report ordinary product bugs in the Birch community repository.

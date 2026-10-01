@@ -36,3 +36,7 @@ codex plugin add birch-status@birch
 ```
 
 Start a new agent session afterwards. Codex also asks you to review and trust the new hooks: open `/hooks` in the new session.
+
+## Reporting a security issue
+
+Use [private vulnerability reporting](https://github.com/BirchHQ/birch-code/security/advisories/new). Do not open a public issue for a suspected vulnerability. See [SECURITY.md](SECURITY.md).
